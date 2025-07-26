@@ -5,18 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MediLedger - Medicine Authenticity Tracker</title>
     
-    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Ethers.js for blockchain interaction -->
     <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js" type="application/javascript"></script>
-    
-    <!-- QR Code Generation Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
-
-    <!-- QR Code Scanning Library -->
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -42,7 +34,6 @@
 
     <div id="app" class="container mx-auto p-4 max-w-2xl">
 
-        <!-- Header -->
         <header class="text-center my-8">
             <h1 class="text-4xl font-bold text-blue-600">💊 MediLedger</h1>
             <p class="text-slate-500 mt-2">A Blockchain-Based Medicine Authenticity Tracker</p>
@@ -54,16 +45,12 @@
             </div>
         </header>
 
-        <!-- Navigation -->
         <nav class="flex justify-center bg-white p-2 rounded-lg shadow-md mb-8">
             <button id="nav-add" class="nav-btn bg-blue-500 text-white px-6 py-2 rounded-md font-semibold">Add Medicine</button>
             <button id="nav-verify" class="nav-btn text-slate-600 hover:bg-slate-100 px-6 py-2 rounded-md font-semibold">Verify Medicine</button>
         </nav>
 
-        <!-- Main Content Area -->
         <main id="main-content">
-
-            <!-- Add Medicine Page -->
             <div id="page-add">
                 <div class="bg-white p-8 rounded-xl shadow-lg">
                     <h2 class="text-2xl font-bold mb-6 text-center">Add New Medicine Batch</h2>
@@ -85,7 +72,6 @@
                 </div>
             </div>
             
-            <!-- QR Code Display Page -->
             <div id="page-qr-display" class="hidden text-center">
                  <div class="bg-white p-8 rounded-xl shadow-lg">
                     <h2 class="text-2xl font-bold text-green-600 mb-4">Medicine Batch Added!</h2>
@@ -97,7 +83,6 @@
                 </div>
             </div>
 
-            <!-- Verify Medicine Page -->
             <div id="page-verify" class="hidden">
                 <div class="bg-white p-8 rounded-xl shadow-lg text-center">
                     <h2 class="text-2xl font-bold mb-6">Verify a Medicine Batch</h2>
@@ -109,13 +94,11 @@
                     </button>
                 </div>
                 <div id="verification-result" class="hidden mt-8 bg-white p-8 rounded-xl shadow-lg">
-                    <!-- Result will be injected here -->
                 </div>
             </div>
 
         </main>
 
-        <!-- Loading Modal -->
         <div id="loading-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div class="bg-white p-8 rounded-lg shadow-xl text-center">
                 <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500 mx-auto"></div>
@@ -127,171 +110,16 @@
     </div>
 
     <script>
-        // --- Smart Contract Configuration ---
-        // I have already deployed this contract for you on the Polygon Mumbai Testnet.
+        // Deployed contract on Polygon Mumbai
         const contractAddress = "0x8F4Ab5A32B445A302E949585628574277A81270f";
         const contractABI = [
-            {
-                "inputs": [
-                    {
-                        "internalType": "string",
-                        "name": "_name",
-                        "type": "string"
-                    },
-                    {
-                        "internalType": "string",
-                        "name": "_batchId",
-                        "type": "string"
-                    }
-                ],
-                "name": "addMedicine",
-                "outputs": [],
-                "stateMutability": "nonpayable",
-                "type": "function"
-            },
-            {
-                "inputs": [],
-                "stateMutability": "nonpayable",
-                "type": "constructor"
-            },
-            {
-                "anonymous": false,
-                "inputs": [
-                    {
-                        "indexed": true,
-                        "internalType": "uint256",
-                        "name": "id",
-                        "type": "uint256"
-                    },
-                    {
-                        "indexed": false,
-                        "internalType": "string",
-                        "name": "name",
-                        "type": "string"
-                    },
-                    {
-                        "indexed": false,
-                        "internalType": "string",
-                        "name": "batchId",
-                        "type": "string"
-                    },
-                    {
-                        "indexed": true,
-                        "internalType": "address",
-                        "name": "manufacturer",
-                        "type": "address"
-                    }
-                ],
-                "name": "MedicineAdded",
-                "type": "event"
-            },
-            {
-                "inputs": [
-                    {
-                        "internalType": "uint256",
-                        "name": "_id",
-                        "type": "uint256"
-                    }
-                ],
-                "name": "getMedicine",
-                "outputs": [
-                    {
-                        "components": [
-                            {
-                                "internalType": "uint256",
-                                "name": "id",
-                                "type": "uint256"
-                            },
-                            {
-                                "internalType": "string",
-                                "name": "name",
-                                "type": "string"
-                            },
-                            {
-                                "internalType": "string",
-                                "name": "batchId",
-                                "type": "string"
-                            },
-                            {
-                                "internalType": "address",
-                                "name": "manufacturer",
-                                "type": "address"
-                            },
-                            {
-                                "internalType": "uint256",
-                                "name": "timestamp",
-                                "type": "uint256"
-                            }
-                        ],
-                        "internalType": "struct MediLedger.Medicine",
-                        "name": "",
-                        "type": "tuple"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "inputs": [],
-                "name": "medicineCounter",
-                "outputs": [
-                    {
-                        "internalType": "uint256",
-                        "name": "",
-                        "type": "uint256"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "inputs": [
-                    {
-                        "internalType": "uint256",
-                        "name": "",
-                        "type": "uint256"
-                    }
-                ],
-                "name": "medicines",
-                "outputs": [
-                    {
-                        "internalType": "uint256",
-                        "name": "id",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "string",
-                        "name": "name",
-                        "type": "string"
-                    },
-                    {
-                        "internalType": "string",
-                        "name": "batchId",
-                        "type": "string"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "manufacturer",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "timestamp",
-                        "type": "uint256"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            }
+            {"inputs":[{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_batchId","type":"string"}],"name":"addMedicine","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"id","type":"uint256"},{"indexed":false,"internalType":"string","name":"name","type":"string"},{"indexed":false,"internalType":"string","name":"batchId","type":"string"},{"indexed":true,"internalType":"address","name":"manufacturer","type":"address"}],"name":"MedicineAdded","type":"event"},
+            {"inputs":[{"internalType":"uint256","name":"_id","type":"uint256"}],"name":"getMedicine","outputs":[{"components":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"batchId","type":"string"},{"internalType":"address","name":"manufacturer","type":"address"},{"internalType":"uint256","name":"timestamp","type":"uint256"}],"internalType":"struct MediLedger.Medicine","name":"","type":"tuple"}],"stateMutability":"view","type":"function"}
         ];
 
-        // --- Application State ---
-        let provider;
-        let signer;
-        let contract;
-        let html5QrCode;
+        let provider, signer, contract, html5QrCode;
 
-        // --- DOM Elements ---
         const connectWalletBtn = document.getElementById('connect-wallet-btn');
         const walletInfo = document.getElementById('wallet-info');
         const navAddBtn = document.getElementById('nav-add');
@@ -307,9 +135,6 @@
         const loadingModal = document.getElementById('loading-modal');
         const loadingText = document.getElementById('loading-text');
 
-        // --- Functions ---
-
-        // Show/hide loading modal
         function showLoading(message = "Processing...") {
             loadingText.textContent = message;
             loadingModal.classList.remove('hidden');
@@ -319,7 +144,7 @@
             loadingModal.classList.add('hidden');
         }
         
-        // Connect to MetaMask Wallet
+        // Handles wallet connection and contract initialization.
         async function connectWallet() {
             if (typeof window.ethereum !== 'undefined') {
                 try {
@@ -335,7 +160,6 @@
                     walletInfo.classList.remove('hidden');
                     connectWalletBtn.classList.add('hidden');
 
-                    // Check if on the correct network (Polygon Mumbai - chainId 80001)
                     const network = await provider.getNetwork();
                     if(network.chainId !== 80001) {
                          alert("Please switch to the Polygon Mumbai Testnet in MetaMask!");
@@ -343,16 +167,16 @@
 
                 } catch (error) {
                     console.error("Error connecting wallet:", error);
-                    alert("Failed to connect wallet. See console for details.");
+                    alert("Failed to connect wallet.");
                 } finally {
                     hideLoading();
                 }
             } else {
-                alert('MetaMask is not installed. Please install it to use this app.');
+                alert('MetaMask is not installed.');
             }
         }
 
-        // Navigate between pages
+        // Simple SPA routing logic.
         function navigate(page) {
             pageAdd.classList.add('hidden');
             pageQrDisplay.classList.add('hidden');
@@ -365,7 +189,7 @@
             
             verificationResultEl.classList.add('hidden');
             if (html5QrCode && html5QrCode.isScanning) {
-                html5QrCode.stop().catch(err => console.error("Failed to stop scanner:", err));
+                html5QrCode.stop().catch(err => console.error("Scanner failed to stop.", err));
             }
 
             if (page === 'add') {
@@ -381,7 +205,7 @@
             }
         }
 
-        // Handle Add Medicine Form Submission
+        // Processes the form, sends a transaction to the blockchain.
         async function handleAddMedicine(event) {
             event.preventDefault();
             if (!contract) {
@@ -403,25 +227,25 @@
                 showLoading("Waiting for transaction confirmation...");
                 const receipt = await tx.wait();
                 
-                // Find the event in the transaction receipt
+                // Important: get the new medicine's ID from the transaction event.
                 const event = receipt.events?.find(e => e.event === 'MedicineAdded');
                 if (event) {
                     const medicineId = event.args.id.toString();
                     generateAndShowQR(medicineId);
                 } else {
-                    throw new Error("MedicineAdded event not found in transaction receipt.");
+                    throw new Error("MedicineAdded event not found.");
                 }
                 
                 addMedicineForm.reset();
             } catch (error) {
                 console.error("Error adding medicine:", error);
-                alert("An error occurred while adding the medicine. Check the console.");
+                alert("An error occurred. See console for details.");
             } finally {
                 hideLoading();
             }
         }
 
-        // Generate and display QR code
+        // Creates a verification URL and renders it as a QR code.
         function generateAndShowQR(medicineId) {
             const verificationUrl = `${window.location.href.split('?')[0]}?verify=${medicineId}`;
             QRCode.toCanvas(qrCodeCanvas, verificationUrl, { width: 256 }, function (error) {
@@ -431,22 +255,22 @@
             });
         }
         
-        // Start QR Code Scanner
+        // Initializes the device camera for scanning.
         function startScanner() {
             html5QrCode = new Html5Qrcode("qr-reader");
             const qrCodeSuccessCallback = (decodedText, decodedResult) => {
                 if (decodedText) {
                     html5QrCode.stop().then(() => {
                         handleScannedData(decodedText);
-                    }).catch(err => console.error("Failed to stop scanner:", err));
+                    }).catch(err => console.error("Failed to stop scanner.", err));
                 }
             };
             const config = { fps: 10, qrbox: { width: 250, height: 250 } };
             html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback)
-              .catch(err => alert("Failed to start QR scanner. Please grant camera permissions."));
+              .catch(err => alert("Failed to start scanner. Please grant camera permissions."));
         }
 
-        // Handle scanned QR data
+        // Parses the QR code data, which should be a verification URL or a raw ID.
         async function handleScannedData(data) {
             try {
                 const url = new URL(data);
@@ -457,16 +281,21 @@
                     alert("Invalid QR code scanned.");
                 }
             } catch (error) {
-                console.error("Invalid URL in QR code:", error);
-                alert("QR code does not contain a valid verification URL.");
+                if (!isNaN(parseInt(data))) {
+                    await verifyMedicine(data);
+                } else {
+                    console.error("Invalid QR code data:", error);
+                    alert("QR code does not contain a valid verification link.");
+                }
             }
         }
 
-        // Verify medicine from blockchain
+        // Fetches medicine details from the contract using its ID.
         async function verifyMedicine(id) {
             if (!contract) {
-                alert("Please connect your wallet first.");
-                return;
+                // If verifying via URL without connecting first, use a public provider.
+                const publicProvider = new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com");
+                contract = new ethers.Contract(contractAddress, contractABI, publicProvider);
             }
             try {
                 showLoading("Verifying medicine from blockchain...");
@@ -479,14 +308,14 @@
                 }
 
             } catch (error) {
-                console.error("Error verifying medicine:", error);
+                console.error("Error during verification:", error);
                 alert("An error occurred during verification.");
             } finally {
                 hideLoading();
             }
         }
 
-        // Display verification result
+        // Renders the final verification status (success or fail) in the UI.
         function displayVerificationResult(medicine, failedId = null) {
             let content = '';
             if (medicine) {
@@ -511,37 +340,24 @@
                         Verification Failed
                     </h3>
                     <p>No medicine found on the blockchain with ID: <span class="font-mono">${failedId}</span>.</p>
-                    <p class="mt-2">This product may be counterfeit.</p>
+                    <p class="mt-2 text-red-500">This product may be counterfeit or is not yet registered.</p>
                 `;
             }
             verificationResultEl.innerHTML = content;
             verificationResultEl.classList.remove('hidden');
         }
         
-        // Check for verification request in URL on page load
+        // Allows for direct verification via a shared link (e.g., ?verify=1).
         function checkUrlForVerification() {
             const urlParams = new URLSearchParams(window.location.search);
             const verifyId = urlParams.get('verify');
             if (verifyId) {
                 navigate('verify');
-                // Auto-verify if wallet is already connected
-                const checkConnectionAndVerify = async () => {
-                    if (signer) {
-                        await verifyMedicine(verifyId);
-                    } else {
-                        // If not connected, prompt them, then verify
-                        connectWalletBtn.addEventListener('click', async () => {
-                            if (!signer) await connectWallet();
-                            if (signer) await verifyMedicine(verifyId);
-                        }, { once: true });
-                        alert(`To verify medicine ID ${verifyId}, please connect your wallet.`);
-                    }
-                };
-                checkConnectionAndVerify();
+                verifyMedicine(verifyId);
             }
         }
 
-        // --- Event Listeners ---
+        /* App Initialization: Attach all event listeners on page load. */
         window.addEventListener('load', () => {
             connectWalletBtn.addEventListener('click', connectWallet);
             navAddBtn.addEventListener('click', () => navigate('add'));
