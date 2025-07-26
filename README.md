@@ -1,52 +1,72 @@
-# MedLedger
-# 💊 MediLedger - Blockchain Medicine Authenticity Tracker
+<div align="center">
 
-MediLedger is a hackathon project that creates a transparent and trustworthy medicine supply chain powered by blockchain technology. Our mission is to fight counterfeit medicines and ensure every drug is authentic, traceable, and safe through instant QR-based verification.
+# 💊 MedLedger
 
-## 🚀 The Problem
+**An immutable, on-chain ledger for verifying medicine authenticity on the Internet Computer.**
 
-The global supply chain for pharmaceuticals is plagued by counterfeit drugs, which pose significant health risks to consumers and damage the reputation of legitimate manufacturers. It's often impossible for a consumer or even a pharmacist to verify if a product is authentic, as traditional packaging can be easily replicated.
+</div>
 
-## ✨ Our Solution
+---
 
-MediLedger solves this problem by creating an immutable, decentralized ledger for every batch of medicine.
+### Core Concept
 
-* **Decentralized Trust**: By using a public blockchain (Polygon), no single entity can tamper with a product's record.
-* **Verifiable Authenticity**: Every new medicine batch is registered on-chain, creating a unique, traceable digital identity.
-* **Instant Verification**: A simple QR code scan with any smartphone camera allows anyone to instantly verify a product's details against the secure blockchain record.
+| The Problem | Our Solution |
+| :--- | :--- |
+| The pharmaceutical market is flooded with **counterfeit drugs**, endangering lives and eroding trust. Traditional packaging is easy to fake, leaving consumers with no reliable way to verify authenticity. | We provide a **decentralized, tamper-proof record** for every medicine batch. By scanning a simple QR code, anyone can instantly verify a product's origin and details against a secure on-chain ledger. |
 
-## 🛠️ Tech Stack
+---
 
-* **Smart Contract**: Solidity
-* **Blockchain**: Polygon Mumbai Testnet
-* **Frontend**: HTML, Tailwind CSS, Vanilla JavaScript
-* **Blockchain Interaction**: Ethers.js
-* **QR Code Functionality**: `qrcode.js`, `html5-qrcode`
+### How It Works
 
-## 🏃‍♀️ How to Run the Project
+1.  **Registration**: A manufacturer authenticates and registers a new medicine batch via the MedLedger dApp.
+2.  **On-Chain Record**: A new, immutable record is created in a backend **Motoko canister** running on the Internet Computer.
+3.  **QR Code Generation**: A unique QR code, pointing to the verification record, is generated for the product's packaging.
+4.  **Instant Verification**: A consumer scans the QR code with their phone, which calls a query function on the canister and instantly displays the authentic product details from the blockchain.
 
-To run this project, you will need the [MetaMask](https://metamask.io/) browser extension.
+---
 
-1.  **Clone the Repository**
+### Architecture & Tech Stack
+
+This entire application is hosted on the **Internet Computer**, leveraging its ability to serve web assets and run backend logic from a unified, decentralized environment. We use a two-canister architecture: a **frontend canister** serves the UI directly to users, while a **backend canister** manages all data and business logic.
+
+| Category | Technology Used |
+| :--- | :--- |
+| **Blockchain** | Internet Computer Protocol (ICP) |
+| **Backend Language** | Motoko |
+| **Frontend** | HTML, CSS, JavaScript (Served On-Chain) |
+| **Development Tools** | `dfx` (DFINITY Canister SDK) |
+
+---
+
+### 🚀 Local Quick-Start
+
+To run this project locally, you will need the `dfx` SDK.
+
+1.  **Clone the repo:**
     ```bash
-    git clone [Your-GitHub-Repo-URL]
+    git clone [Your-GitHub-Repo-URL] && cd [project-folder]
     ```
+2.  **Start the local replica:**
+    ```bash
+    dfx start --background
+    ```
+3.  **Deploy the dApp:**
+    ```bash
+    dfx deploy
+    ```
+---
 
-2.  **Configure MetaMask**
-    * Add and switch to the **Polygon Mumbai** test network.
-    * Get free test MATIC from a public faucet like [mumbaifaucet.com](https://mumbaifaucet.com/) to pay for transaction fees.
+### 🌱 Project Roadmap
 
-3.  **Run the Application**
-    * Simply open the `index.html` file in a web browser (like Chrome or Firefox).
+- [ ] **Phase 1: Secure Authentication**
+    - Implement full Internet Identity integration for manufacturers.
+- [ ] **Phase 2: External Integration**
+    - Use HTTP outcalls to cross-reference manufacturer licenses with regulatory APIs.
+- [ ] **Phase 3: Optimization**
+    - Explore generating QR code SVG data directly inside the Motoko canister.
+- [ ] **Phase 4: Mainnet Launch**
+    - After rigorous testing, deploy the canisters to the ICP mainnet for public use.
 
-## 🎬 How to Use the App
+---
 
-1.  **Connect Wallet**: Click the "Connect MetaMask" button to link your wallet.
-2.  **Add a Medicine Batch**:
-    * In the "Add Medicine" tab, enter the medicine's name and its batch ID.
-    * Click "Add to Blockchain" and confirm the transaction in MetaMask.
-    * Once the transaction is complete, a unique QR code will be displayed.
-3.  **Verify a Medicine Batch**:
-    * Navigate to the "Verify Medicine" tab.
-    * Click "Start Scan" and point your camera at the generated QR code.
-    * The app will instantly retrieve the product's details from the blockchain and display them, confirming its authenticity.
+<p align="center">Licensed under the MIT License.</p>
