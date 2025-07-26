@@ -69,4 +69,3 @@ To run this project locally, you will need the `dfx` SDK.
 
 ---
 
-<p align="center">Licensed under the MIT License.</p>
